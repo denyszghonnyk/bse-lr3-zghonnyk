@@ -1,0 +1,21 @@
+name: Rust Unit Tests
+
+on: [push, pull_request] # Тригери запуску
+
+jobs:
+  test:
+    runs-on: ubuntu-latest # Середовище виконання
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Копіювання коду в Runner
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-tarpaulin
+        run: cargo install cargo-tarpaulin
+
+      - name: Run Tests and Check Coverage
+        # Перевірка, щоб покриття не падало нижче 80%
+        run: cargo tarpaulin --ignore-tests --fail-under 80
